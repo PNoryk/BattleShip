@@ -15,7 +15,6 @@ class Board:
                 line.append(Cell())
             self.__pos.append(line)
 
-        self.__ships = []
         self.__ships_count = 0
 
     def __check(self, y, x, health, orient):  # False - есть рядом корабли или выход за пределы поля / True - нет
@@ -85,16 +84,18 @@ class Board:
                 for j in range(x1, x2):
                     if not self.__pos[i][j].ship:
                         self.__pos[i][j].state = False
-            print("x =" + str(x) + " y =" + str(y))
+            # print("x =" + str(x) + " y =" + str(y))
 
     def add_ship(self, ship, y, x):
-        if isinstance(ship, Ship) and self.__check(y, x, ship.health, ship.orientation):
+        if isinstance(ship, Ship) and self.__check(y, x, ship.health, ship.orientation) and self.__ships_count < 10:
             for item in range(ship.health):
                 if ship.orientation == "horizontal" and ship.health + x <= self.__columns:
                     self.__pos[y][x + item].ship = ship
                 elif ship.orientation == "vertical" and ship.health + y <= self.__rows:
                     self.__pos[y + item][x].ship = ship
             self.__ships_count += 1
+        else:
+            return False
 
     def win(self):
         if self.__ships_count == 0:
@@ -102,27 +103,41 @@ class Board:
         return False
 
     def shot(self, y, x):
-        if self.__pos[y][x].state == None:
+        if 0 <= y < self.__rows and 0 <= x < self.__columns and self.__pos[y][x].state == None:
             if self.__pos[y][x].ship:
                 self.__pos[y][x].state = True
                 self.__pos[y][x].ship.shot()
                 if self.__pos[y][x].ship.is_dead():
                     self.__close_cells(y, x)
                     self.__ships_count -= 1
+                return True
             else:
                 self.__pos[y][x].state = False
+                return False
+        else:
+            return False
 
     @property
     def pos(self):
         return self.__pos
 
     @property
-    def ships(self):
-        return self.__ships
+    def rows(self):
+        return self.__rows
+
+    @property
+    def columns(self):
+        return self.__columns
 
     @property
     def ships_count(self):
         return self.__ships_count
+
+    def shot_check(self, y, x):
+        if self.__pos[y][x].state == None:
+        # if 0 <= y < self.__rows and 0 <= x < self.__columns and self.__pos[y][x].state == None:
+            return True
+        return False
 
     def __str__(self):
         string = ""
