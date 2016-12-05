@@ -7,14 +7,13 @@ from random import randint
 
 
 class RandomShipsSetting:
-    __ships_start = [Battleship(randint(1, 2)), Cruiser(randint(1, 2)), Destroyer(randint(1, 2)),
-                     Submarine(randint(1, 2))]
+    __ships_start = [Battleship, Cruiser, Destroyer, Submarine]
     __ships = []
 
     for i in range(len(__ships_start)):
         j = 0
         while j < i + 1:
-            __ships.append(__ships_start[i])
+            __ships.append(__ships_start[i](randint(1, 2)))
             j += 1
 
     @staticmethod

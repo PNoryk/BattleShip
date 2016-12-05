@@ -1,23 +1,26 @@
 import sys
+from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QPushButton, QGridLayout
 
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QApplication, QDialog
-from PyQt5.uic import loadUiType
+
+class MainWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setGeometry(300, 300, 640, 480)
+        # label = QLabel("Hello", self).move(100, 100)
+
+        q = QGridLayout()
+        q.addWidget(QPushButton("Hello"), 0, 0)
+
+        q.addWidget(QPushButton("its"), 0, 1, 1, 5)
+        q.addWidget(QPushButton("me"), 1, 0)
+        self.setLayout(q)
+
+        self.resize(300, 300)
 
 app = QApplication(sys.argv)
-app.setApplicationName('course_work')
-form_class, base_class = loadUiType('Window.ui')
-
-
-class MainWindow(QDialog, form_class):
-    def __init__(self, *args):
-        super(MainWindow, self).__init__(*args)
-
-        self.setupUi(self)
-
-
-if __name__ == '__main__':
-    form = MainWindow()
-    form.setWindowTitle('BattleShips')
-    form.show()
-    sys.exit(app.exec_())
+Window = MainWindow()
+Window.show()
+sys.exit(app.exec_())

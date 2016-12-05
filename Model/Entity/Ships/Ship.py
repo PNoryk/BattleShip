@@ -3,11 +3,11 @@ class Ship:
 
     def __init__(self, orientation=1):
         self.__health = 0
+        self.__shots = 0
         if 1 <= orientation <= 2:
             self.__orientation = self.__orient[orientation]
         else:
             self.__orientation = self.__orient[1]
-        self.__shots = 0
 
     @property
     def health(self):
@@ -17,7 +17,16 @@ class Ship:
     def health(self, health):
         self.__health = health
 
-    def shot(self):
+    @property
+    def shots(self):
+        return self.__shots
+
+    @shots.setter
+    def shots(self, value):
+        if value == 0:
+            self.__shots = value
+
+    def inc_shot(self):
         self.__shots += 1
 
     @property
@@ -30,4 +39,5 @@ class Ship:
         return False
 
     def __str__(self):
-        return "\nOrientation: \t" + self.__orientation + "\nHealth: " + str(self.__health)
+        return "\nOrientation: \t" + self.__orientation + "\nHealth: " + str(self.__health) \
+               + "\nShots: " + str(self.__shots)

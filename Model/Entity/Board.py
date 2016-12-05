@@ -106,7 +106,8 @@ class Board:
         if 0 <= y < self.__rows and 0 <= x < self.__columns and self.__pos[y][x].state == None:
             if self.__pos[y][x].ship:
                 self.__pos[y][x].state = True
-                self.__pos[y][x].ship.shot()
+                self.__pos[y][x].ship.inc_shot()
+                print(self.__pos[y][x].ship.shots)
                 if self.__pos[y][x].ship.is_dead():
                     self.__close_cells(y, x)
                     self.__ships_count -= 1
@@ -134,9 +135,10 @@ class Board:
         return self.__ships_count
 
     def shot_check(self, y, x):
-        if self.__pos[y][x].state == None:
-        # if 0 <= y < self.__rows and 0 <= x < self.__columns and self.__pos[y][x].state == None:
-            return True
+        if 0 <= y < self.__rows and 0 <= x < self.__columns:
+            if self.__pos[y][x].state == None:
+            # if 0 <= y < self.__rows and 0 <= x < self.__columns and self.__pos[y][x].state == None:
+                return True
         return False
 
     def __str__(self):
